@@ -1,0 +1,9 @@
+email:
+
+select PRIMARY_EMAIL_NAME from WUSER where ACCOUNT_NUMBER = ''
+
+Name:
+
+select FIRST_NAME, LAST_NAME from WUSER where ACCOUNT_NUMBER = ''
+
+
