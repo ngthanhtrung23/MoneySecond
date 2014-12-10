@@ -14,9 +14,9 @@
 * Send email
 * Create demo user
 
-# Work divide
-* Phuc: Page layout
-* Anh Trung: Chrome extension insert link + Introduction
-* Trung: JavaScript
-* Anh Phuong + chi Linh: Find data
+# Work divide:
 
+* Linh: Email, stage setup
+* Phuc: Express
+* Trung: bootstrap UI
+* The Trung: polymer UI
