@@ -7,6 +7,10 @@ router.get('/', function(req, res) {
   res.render('index');
 });
 
+router.get('/income', function(req, res) {
+  res.render('income');
+});
+
 router.post('/insert', budgetController.insert);
 router.get('/getBudgets', budgetController.getAllBudgets);
 router.get('/getBudget/:id', budgetController.getBudgetByAccountNumber);
