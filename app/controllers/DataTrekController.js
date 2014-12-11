@@ -70,15 +70,15 @@ exports.userData = function (req, res) {
 
 exports.monthlyExpense = function (req, res) {
     console.log("Retrieving user monthly expense");
-    var expenses = [];
+    expenses = [];
     var functions = [];
     for(var i = 0; i < 12; i++) {
         expenses.push(0);
-        var func = makeCallbackFunction(i+1);
+        var func = makeCallbackFunction(i);
         functions.push(func);
     }
     async.parallel(functions, function(err,results){
-        res.json(results);
+        res.json({expense: expenses});
         console.log('ok');
     });
 }
@@ -89,18 +89,21 @@ function makeCallbackFunction(month){
 }
 function getExpenseByMonth(month, callback){
     console.log(month);
-    var sql1 = "select sum(amount) from  wtransaction where account_number = " +account_number+" and amount<0 and time_created >=" + dates[month-1]+ " and time_created < " + dates[month];
-    var sql2 = "select sum(amount) from  wtransaction_p2 where account_number = " +account_number+" and amount<0 and time_created >=" + dates[month-1]+ " and time_created < " + dates[month];
-    var sql3 = "select sum(amount) from wcctrans where currency_code = 'AUD' and account_number = "+account_number+" and time_created >=" + dates[month-1] + "and time_created < " + dates[month];
+    var sql1 = "select sum(amount) from  wtransaction where account_number = " +account_number+" and amount<0 and time_created >=" + dates[month]+ " and time_created < " + dates[month+1];
+    var sql2 = "select sum(amount) from  wtransaction_p2 where account_number = " +account_number+" and amount<0 and time_created >=" + dates[month]+ " and time_created < " + dates[month+1];
+    var sql3 = "select sum(amount) from wcctrans where currency_code = 'AUD' and account_number = "+account_number+" and time_created >=" + dates[month] + "and time_created < " + dates[month+1];
+    var cacheable = true;
+    if(month == 11)
+        cacheable = false;
     async.parallel({
         transaction1: function(callback){
-            dataTrekQuery(sql1, 'MONEY', callback, false);
+            dataTrekQuery(sql1, 'MONEY', callback, cacheable);
         },
         transaction2: function(callback){
-            dataTrekQuery(sql2, 'MONEY', callback, false);
+            dataTrekQuery(sql2, 'MONEY', callback, cacheable);
         },
         transaction3: function(callback){
-            dataTrekQuery(sql3, 'MONEY', callback, false);
+            dataTrekQuery(sql3, 'MONEY', callback, cacheable);
         }
     }, function(err, results){
         if(err){
@@ -128,6 +131,7 @@ function getExpenseByMonth(month, callback){
             console.log('Transaction 3: ' + transaction3);
             var totalSpentThisMonth = transaction3 - transaction2 - transaction1;
             console.log("Total spent month "+month + " :" + totalSpentThisMonth); 
+            expenses[month] = totalSpentThisMonth;
             callback(null, totalSpentThisMonth);
         }       
     });
