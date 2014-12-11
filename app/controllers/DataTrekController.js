@@ -3,6 +3,21 @@ var account_number = '2066400437456043270';
 var async = require('async');
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 var cache = [];
+var dates = [
+        1388534400, // 1
+        1391212800, // 2
+        1393632000, // 3
+        1396310400, // 4
+        1398902400, // 5
+        1401580800, // 6
+        1404172800, // 7
+        1406851200, // 8
+        1409529600, // 9
+        1412121600, // 10
+        1414800000, // 11
+        1417392000, // 12
+        1420070400, // 1 - 2015
+    ];
 function dataTrekQuery(sql, schema, callback, cacheable) {
     if(cacheable){
         if (cache.hasOwnProperty(sql)) {
@@ -43,6 +58,7 @@ exports.userData = function (req, res) {
                 res.json("Error!");
                 console.log('Error when retreiving user data!');
             }else{
+                console.log(data);
                 res.json({
                     email:data[1][0],
                     first_name: data[1][1],
@@ -54,28 +70,68 @@ exports.userData = function (req, res) {
 
 exports.monthlyExpense = function (req, res) {
     console.log("Retrieving user monthly expense");
-    var dates = [
-        1388534400, // 1
-        1391212800, // 2
-        1393632000, // 3
-        1396310400, // 4
-        1398902400, // 5
-        1401580800, // 6
-        1404172800, // 7
-        1406851200, // 8
-        1409529600, // 9
-        1412121600, // 10
-        1414800000, // 11
-        1417392000, // 12
-        1420070400, // 1 - 2015
-    ];
-    var expenses = [], i;
-
-    for(i = 0; i < 12; ++i) {
+    var expenses = [];
+    var functions = [];
+    for(var i = 0; i < 12; i++) {
         expenses.push(0);
+        var func = makeCallbackFunction(i+1);
+        functions.push(func);
+    }
+    async.parallel(functions, function(err,results){
+        res.json(results);
+        console.log('ok');
+    });
+}
+function makeCallbackFunction(month){
+    return function(callback){
+        getExpenseByMonth(month, callback);
     }
 }
-
+function getExpenseByMonth(month, callback){
+    console.log(month);
+    var sql1 = "select sum(amount) from  wtransaction where account_number = " +account_number+" and amount<0 and time_created >=" + dates[month-1]+ " and time_created < " + dates[month];
+    var sql2 = "select sum(amount) from  wtransaction_p2 where account_number = " +account_number+" and amount<0 and time_created >=" + dates[month-1]+ " and time_created < " + dates[month];
+    var sql3 = "select sum(amount) from wcctrans where currency_code = 'AUD' and account_number = "+account_number+" and time_created >=" + dates[month-1] + "and time_created < " + dates[month];
+    async.parallel({
+        transaction1: function(callback){
+            dataTrekQuery(sql1, 'MONEY', callback, false);
+        },
+        transaction2: function(callback){
+            dataTrekQuery(sql2, 'MONEY', callback, false);
+        },
+        transaction3: function(callback){
+            dataTrekQuery(sql3, 'MONEY', callback, false);
+        }
+    }, function(err, results){
+        if(err){
+            console.log("Error when trying to query transaction");
+            callback(err);
+        }else{
+            console.log(results);
+            var transaction1;
+            var transaction2;
+            var transaction3; 
+            if(results.transaction1 == undefined)
+                transaction1 = 0;
+            else
+                transaction1 = results.transaction1[1][0];
+            if(results.transaction2 == undefined)
+                transaction2 = 0;
+            else
+                transaction2 = results.transaction2[1][0];
+            if(results.transaction3 == undefined)
+                transaction3 = 0;
+            else
+                transaction3 = results.transaction3[1][0];
+            console.log('Transaction 1: '+ transaction1);
+            console.log('Transaction 2: '+ transaction2);
+            console.log('Transaction 3: ' + transaction3);
+            var totalSpentThisMonth = transaction3 - transaction2 - transaction1;
+            console.log("Total spent month "+month + " :" + totalSpentThisMonth); 
+            callback(null, totalSpentThisMonth);
+        }       
+    });
+}
 exports.monthlyIncome = function (req, res) {
     console.log("Retrieving user monthly income");
     res.json({
