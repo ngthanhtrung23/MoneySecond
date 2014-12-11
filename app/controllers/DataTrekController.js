@@ -3,7 +3,7 @@ var account_number = '2066400437456043270';
 var async = require('async');
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 var cache = [];
-exports.dataTrekQuery = function (sql, schema, callback, cacheable) {
+function dataTrekQuery(sql, schema, callback, cacheable) {
     if(cacheable){
         if (cache.hasOwnProperty(sql)) {
             console.log('this request is cached!');
@@ -26,7 +26,6 @@ exports.dataTrekQuery = function (sql, schema, callback, cacheable) {
                 if(cacheable){
                     cache[sql] = user_data['data'];
                 }
-                console.log(body);
                 callback(null, user_data['data']);
             }else{
                 callback(error);
@@ -134,3 +133,4 @@ exports.incomeCategory = function (req, res) {
     }
     ]);
 }
+exports.dataTrekQuery = dataTrekQuery;
