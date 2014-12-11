@@ -54,8 +54,40 @@ exports.monthlyExpense = function (req, res) {
     });
 }
 
+exports.monthlyIncome = function (req, res) {
+    console.log("Retrieving user monthly income");
+    res.json({
+        income: [20, 50, 30, 70,
+                  66, 39, 47, 12,
+                  99, 77, 38, 11],
+    });
+}
+
 exports.spendCategory = function (req, res) {
     console.log("Retrieving spend category data");
+    res.json([
+        {
+            value: 300,
+            color:"#F7464A",
+            highlight: "#FF5A5E",
+            label: "Red"
+        },
+        {
+            value: 50,
+            color: "#46BFBD",
+            highlight: "#5AD3D1",
+            label: "Green"
+        },
+        {
+            value: 100,
+            color: "#FDB45C",
+            highlight: "#FFC870",
+            label: "Yellow"
+        }
+    ]);
+}
+
+exports.incomeCategory = function (req, res) {
     res.json([
         {
             value: 300,

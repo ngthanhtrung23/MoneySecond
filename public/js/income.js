@@ -1,12 +1,12 @@
 $(document).ready(function () {
     "use strict";
 
-    getMonthlyExpenseData(function(barData) {
+    getMonthlyIncome(function(barData) {
         var myBarChart = new Chart($('#monthy-income-canvas').get(0).getContext("2d")).Bar(barData, getBarOptions());
     });
 
     getSpendCategoryData(function(catData) {
-        var myPieChart = new Chart($('#category-canvas').get(0).getContext('2d')).Pie(catData, getPieOptions());
+        var myPieChart = new Chart($('#income-category-canvas').get(0).getContext('2d')).Pie(catData, getPieOptions());
     });
 
     $.post(
@@ -29,11 +29,13 @@ function getSpendCategoryData(callback) {
     );
 }
 
-function getMonthlyExpenseData(callback) {
+function getMonthlyIncome(callback) {
+    console.log("Get monthly income");
     $.post(
-        '/monthlyExpense',
+        '/monthlyIncome',
         {},
         function (data, status, xhr) {
+            console.log(data);
             callback({
                 labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
                 datasets: [
@@ -43,7 +45,7 @@ function getMonthlyExpenseData(callback) {
                         strokeColor: "rgba(220,220,220,0.8)",
                         highlightFill: "rgba(220,220,220,0.75)",
                         highlightStroke: "rgba(220,220,220,1)",
-                        data: data['expense']
+                        data: data['income']
                     }
                 ]
             });

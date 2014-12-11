@@ -21,5 +21,7 @@ router.post('/updateBudget', budgetController.updateBudget);
 router.post('/updateAmountSpent', budgetController.updateAmountSpent);
 router.post('/userData', dataTrekController.userData);
 router.post('/monthlyExpense', dataTrekController.monthlyExpense);
+router.post('/monthlyIncome', dataTrekController.monthlyIncome);
 router.post('/spendCategory', dataTrekController.spendCategory);
+router.post('/incomeCategory', dataTrekController.incomeCategory);
 module.exports = router;
