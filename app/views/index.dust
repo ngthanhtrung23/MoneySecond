@@ -66,7 +66,7 @@
         <h1>Monthly Budget</h1>
       </div>
       <p>You can set a budget for monthly spending. When the amount you spend exceeded this budget, you will be notified by email.</p>
-      <form id="budgetForm" action="/budget" method="post" >
+      <form id="budgetForm" action="/updateBudget" method="post" >
         <input type="text" name="budget" value="{budget.current}" placeholder="{budget.current}" class="form-control" style="width:150px !important;display:inline-block !important;margin-right:5px;"/>
         <input type="hidden" name="account_number" value="{user.account_number}"/>
         <input type="submit" name="add.x" class="btn btn-sm btn-primary"/>
@@ -98,12 +98,19 @@
           url = $form.attr( "action" );
        
         
-        var posting = $.post( url, { s: term } );
+        var posting = $.post( url, { budget: term } );
        
         
         posting.done(function( data ) {
           var content = $( data ).find( "#content" );
-          $( "#result" ).empty().append( content );
+              $.get(
+                '/getBudget',
+                {},
+                function (data, status, xhr) {
+                    console.log(data);
+                    $('#result').text('You spent: $' + data['data']['amount_spent'] + '/$' + data['data']['budget']);
+                }
+            );
         });
       });
       </script>

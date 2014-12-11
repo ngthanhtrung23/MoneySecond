@@ -52,23 +52,32 @@ exports.getBudgetByAccountNumber = function(req, res){
 	var callbacks = renderJsonCallback(res);
 	var Budget = mongoose.model('Budgets');
 	// var account_number = req.params.id;
-	console.log(account_number);
+	console.log("account_number = " + account_number);
 	Budget.findOne({'account_number': account_number}, function(err, budget){
 		if(err){
 			console.log("ERROR FETCHING BUDGET!");
 			callbacks[1](err);
 		} else {
             if (budget == null) {
+                var Budget = mongoose.model('Budgets');
                 async.series([function(callback){
                     getAmountSpentCurrentMonth(callback);
                 }], function(err, results){
                     console.log(results);
                     var budget = new Budget({account_number: account_number, budget:50000, amount_spent: results[0]});
                     budget.save(function(err){
+                        if(err){
+                            console.log('Error when inserting new budget');
+                            callbacks[1](err);
+                        }
+                        else{
+                            console.log('New budget inserted');
+                            callbacks[0](budget);
+                        }
                     });
                 });
             }
-		    callbacks[0](budget);
+            else callbacks[0](budget);
         }
 	});
 }
@@ -79,6 +88,7 @@ exports.updateBudget = function(req, res){
 	// var account_number = reqBody.account_number;
 	var budget = reqBody.budget;
 	var Budget = mongoose.model('Budgets');
+    console.log("Updating, new value = " + budget);
 	Budget.update({account_number: account_number}, {budget: budget}, {multi: true}, function(err, numberAffected, raw){
 		if(err){
 			callbacks[1](err);
