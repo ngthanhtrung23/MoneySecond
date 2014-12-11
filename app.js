@@ -7,15 +7,20 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var fs = require('fs');
 var routes = require('./routes/index');
+var cons = require('consolidate');
 
 var app = express();
 var port = process.env.PORT || 3000;
 // Connect to mongodb
 var db = require('./config/mongo');
 
+// assign the dust engine to .dust files
+app.engine('dust', cons.dust);
+
 // view engine setup
 app.set('views', path.join(__dirname, '/app/views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'dust');
+
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
