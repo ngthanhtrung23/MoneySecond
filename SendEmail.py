@@ -14,15 +14,15 @@ from email.mime.text import MIMEText
 SMTP_SERVER = "atom.corp.ebay.com"
 EMAIL_TEMPLATE = 'AlertBudgetTemplate.html'
 EMAIL_SEND = 'AlertBudgetSend.html'
-FROM = 'thanhtnguyen@paypal.com'
+FROM = 'DL-PayPal-YourMoneyBestFriend@paypal.com'
 
 NAME1 = 'Monthly Budget Expense Alert'
 NAME2 = 'Your spending on PayPal Account has reach'
+SUBJECT = 'Alert: Overspending on your PayPal account'
 
 class SendEmail:
-	def __init__(self, toE, name, amount, budget, subj):
+	def __init__(self, toE, name, amount, budget):
 		self.toE = toE
-		self.subj = subj
 		self.name = name
 		self.amount = amount
 		self.budget = budget
@@ -32,7 +32,7 @@ class SendEmail:
 		fp = open(EMAIL_SEND, 'rb')
 		msg = MIMEText(fp.read(), 'html')
 		fp.close()
-		msg['Subject'] = self.subj
+		msg['Subject'] = SUBJECT 
 		msg['From'] = FROM
 		msg['To'] = self.toE
 		s = smtplib.SMTP(SMTP_SERVER)
@@ -54,15 +54,25 @@ class SendEmail:
 		file_w.close()
 		file_r.close()
 
-sender = 'thanhtnguyen@paypal.com'
-receiver = 'livu@paypal.com'
-name  = 'Vu Linh'
-amount = 12
-budget = 20
-subject = 'Alert: Overspending on your PayPal account'
-emailSend = EMAIL_SEND
-sendE = SendEmail(receiver, name, amount, budget, subject)
-sendE.sendemail()
+if 1:
+	receiver = sys.argv[1]
+	name = sys.argv[2]
+	amount = sys.argv[3]
+	budget = sys.argv[4]
+	sendE = SendEmail(receiver, name, amount, budget)
+	sendE.sendemail()
+
+
+if 0:
+	sender = 'thanhtnguyen@paypal.com'
+	receiver = 'livu@paypal.com'
+	name  = 'Vu Linh'
+	amount = 12
+	budget = 20
+	subject = 'Alert: Overspending on your PayPal account'
+	emailSend = EMAIL_SEND
+	sendE = SendEmail(receiver, name, amount, budget)
+	sendE.sendemail()
 
 
 #sender = 'livu@corp.ebay.com'
