@@ -19,7 +19,8 @@
         <h1>Income by Category</h1>
       </div>
       <div>
-        <canvas id="income-category-canvas" width="450" height="300"></canvas>
+        <canvas id="income-category-canvas" width="200" height="200"></canvas>
+        <div id="pieLegend"></div>
       </div>
 
       <script src="js/income.js"></script>

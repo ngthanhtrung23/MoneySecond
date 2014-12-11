@@ -5,25 +5,29 @@ $(document).ready(function () {
         var myBarChart = new Chart($('#monthy-income-canvas').get(0).getContext("2d")).Bar(barData, getBarOptions());
     });
 
-    getSpendCategoryData(function(catData) {
+    getIncomeCategoryData(function(catData) {
+        console.log("Draw pie chart");
+        console.log(catData);
         var myPieChart = new Chart($('#income-category-canvas').get(0).getContext('2d')).Pie(catData, getPieOptions());
+        $('#pieLegend').html(myPieChart.generateLegend());
     });
 
-    $.post(
+    $.get(
         '/userData',
         {},
         function (data, status, xhr) {
             console.log(data);
-            $('#account-last-name').text(data['last_name']);
+            $('#account-last-name').text(data['first_name']);
         }
     );
 });
 
-function getSpendCategoryData(callback) {
+function getIncomeCategoryData(callback) {
     $.post(
-        '/spendCategory',
+        '/incomeCategory',
         {},
         function (data, status, xhr) {
+            console.log(data);
             callback(data);
         }
     );
@@ -41,10 +45,10 @@ function getMonthlyIncome(callback) {
                 datasets: [
                     {
                         label: "Monthly Income",
-                        fillColor: "rgba(220,220,220,0.5)",
-                        strokeColor: "rgba(220,220,220,0.8)",
-                        highlightFill: "rgba(220,220,220,0.75)",
-                        highlightStroke: "rgba(220,220,220,1)",
+                        fillColor: "#337ab7",
+                        strokeColor: "#337ab7",
+                        highlightFill: "#619ED4",
+                        highlightStroke: "#619ED4",
                         data: data['income']
                     }
                 ]

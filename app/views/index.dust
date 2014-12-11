@@ -22,7 +22,7 @@
         <h1>Spending by category</h1>
       </div>
       <div>
-        <canvas id="category-canvas"></canvas>
+        <canvas id="category-canvas" width="200" height="200"></canvas>
         <div id="pieLegend"></div>
       </div>
       <!--
@@ -72,6 +72,7 @@
         <input type="submit" name="add.x" class="btn btn-sm btn-primary"/>
       </form>
       <div id="result" class="alert alert-warning" style="width: 19% !important;">
+        Fetching data...
       </div>
       <!--
       <h2>

@@ -15,7 +15,7 @@ $(document).ready(function () {
         {},
         function (data, status, xhr) {
             console.log(data);
-            $('#account-last-name').text(data['last_name']);
+            $('#account-last-name').text(data['first_name']);
         }
     );
 

@@ -74,8 +74,6 @@ exports.monthlyExpense = function (req, res) {
     for(i = 0; i < 12; ++i) {
         expenses.push(0);
     }
-    
-
 }
 
 exports.monthlyIncome = function (req, res) {
@@ -94,43 +92,71 @@ exports.spendCategory = function (req, res) {
         value: 300,
         color:"#F7464A",
         highlight: "#FF5A5E",
-        label: "Red"
+        label: "Food"
     },
     {
         value: 50,
         color: "#46BFBD",
         highlight: "#5AD3D1",
-        label: "Green"
+        label: "Clothes"
     },
     {
         value: 100,
         color: "#FDB45C",
         highlight: "#FFC870",
-        label: "Yellow"
+        label: "Transport"
     }
     ]);
 }
 
 exports.incomeCategory = function (req, res) {
-    res.json([
-    {
-        value: 300,
-        color:"#F7464A",
-        highlight: "#FF5A5E",
-        label: "Red"
-    },
-    {
-        value: 50,
-        color: "#46BFBD",
-        highlight: "#5AD3D1",
-        label: "Green"
-    },
-    {
-        value: 100,
-        color: "#FDB45C",
-        highlight: "#FFC870",
-        label: "Yellow"
-    }
-    ]);
+    console.log("Retrieving income category");
+    var sql1 = "select sum(amount) from  wtransaction where account_number = " +account_number+" and amount<0";
+    var sql2 = "select sum(amount) from  wtransaction_p2 where account_number = " +account_number+" and amount<0";
+    var sql3 = "select sum(amount) from wcctrans where currency_code = 'AUD' and account_number = "+account_number;
+    console.log("sql = " + sql1);
+    async.parallel({
+        transaction1: function(callback){
+            dataTrekQuery(sql1, 'MONEY', callback, true);
+        },
+        transaction2: function(callback){
+            dataTrekQuery(sql2, 'MONEY', callback, true);
+        },
+        transaction3: function(callback){
+            dataTrekQuery(sql3, 'MONEY', callback, true);
+        }
+    }, function(err, results){
+        console.log("err = " + err);
+        console.log("results = " + results);
+        if(err){
+        }else{
+            var transaction1 = results.transaction1[1][0];
+            var transaction2 = results.transaction2[1][0];
+            var transaction3 = results.transaction3[1][0];
+            console.log('Transaction 1: '+ transaction1);
+            console.log('Transaction 2: '+ transaction2);
+            console.log('Transaction 3: ' + transaction3);
+            res.json([
+            {
+                value: -parseInt(transaction1, 10),
+                color:"#F7464A",
+                highlight: "#FF5A5E",
+                label: "Bank"
+            },
+            {
+                value: -parseInt(transaction2, 10),
+                color: "#46BFBD",
+                highlight: "#5AD3D1",
+                label: "Balance"
+            },
+            {
+                value: parseInt(transaction3, 10),
+                color: "#FDB45C",
+                highlight: "#FFC870",
+                label: "Card"
+            }
+            ]);
+        }
+    });
 }
 exports.dataTrekQuery = dataTrekQuery;
