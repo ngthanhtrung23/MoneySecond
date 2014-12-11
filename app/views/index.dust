@@ -15,9 +15,9 @@
         <h1>Spending by month</h1>
       </div>
       <div>
-      	<!-- GRAPH GOES HERE! -->
+        <canvas id="monthy-income-canvas" width="450" height="300"></canvas>
       </div>
-
+<!--
       <p>
         <button class="btn btn-lg btn-default" type="button">Default</button>
         <button class="btn btn-lg btn-primary" type="button">Primary</button>
@@ -27,14 +27,15 @@
         <button class="btn btn-lg btn-danger" type="button">Danger</button>
         <button class="btn btn-lg btn-link" type="button">Link</button>
       </p>
-
+-->
 
       <div class="page-header">
         <h1>Spending by category</h1>
       </div>
       <div>
-      	<!-- PIECHART GOES HERE! -->
+        <canvas id="category-canvas"></canvas>
       </div>
+      <!--
       <div class="row">
         <div class="col-md-6">
           <table class="table">
@@ -69,7 +70,7 @@
           </table>
         </div>
       </div>
-
+-->
 
       <div class="page-header">
         <h1>Thumbnails</h1>
@@ -116,5 +117,5 @@
           <li role="presentation"><a href="#" tabindex="-1" role="menuitem">Separated link</a></li>
         </ul>
       </div>
-
+      <script src="js/moneyInsight.js"></script>
 {/main}
