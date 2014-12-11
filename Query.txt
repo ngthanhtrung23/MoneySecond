@@ -7,3 +7,11 @@ Name:
 select FIRST_NAME, LAST_NAME from WUSER where ACCOUNT_NUMBER = ''
 
 
+amount:
+1.
+select sum(amount) from  wtransaction where account_number = 1176486223147166312 and amount<0 and time_created > 1417392000 and time_created < 1419984000
+
+2. 
+select sum(amount) from  wtransaction_p2 where account_number = 1176486223147166312 and amount<0 and time_created > 1417392000 and time_created < 1419984000
+
+
