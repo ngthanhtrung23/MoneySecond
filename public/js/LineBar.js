@@ -8,7 +8,7 @@
 
 
     var defaultConfig = {
-        //Function - Whether the current x-axis label should be filtered out, takes in current label and 
+        //Function - Whether the current x-axis label should be filtered out, takes in current label and
         //index, return true to filter out the label return false to keep the label
         labelsFilter : function(label,index){return false;},
 
@@ -190,10 +190,10 @@
 
                     break;
                 }
-                
+
 
             },this);
-        
+
             this.buildScale(data.labels);
 
             helpers.each(this.lineDatasets,function(dataset,datasetIndex){
@@ -341,7 +341,7 @@
         },
         addData : function(valuesArray,label){
             //Map the values array for each of the datasets
-            
+
             var lineDataSetIndex = 0;
             var barDataSetIndex = 0;
             helpers.each(valuesArray,function(value,datasetIndex){
