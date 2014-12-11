@@ -77,7 +77,9 @@ exports.getBudgetByAccountNumber = function(req, res){
                     });
                 });
             }
-            else callbacks[0](budget);
+            else{ 
+            	refreshAmountSpent(budget, callbacks[0]);
+            }
         }
 	});
 }
@@ -98,16 +100,31 @@ exports.updateBudget = function(req, res){
 		}
 	})
 }
-exports.updateAmountSpent = function(account_number, amount_spent){
-	var Budget = mongoose.model('Budgets');
-	Budget.update({account_number: account_number}, {amount_spent:amount_spent}, {multi:false}, function(err, numberAffected, raw){
-		if(err){
-			callbacks[1](err);
-		}else{
-			console.log('Successfully updated amount spent for ' + numberAffected + ' documents');
-			callbacks[0]({'numOfRecordUpdated': numberAffected});
-		}
+function refreshAmountSpent(budget, callback){
+	async.series([function(callback){
+		updateAmountSpent(callback);
+	}], function(err, results){
+		var amount_spent = results[0];
+		budget.amount_spent = amount_spent;
+		callback(budget);
 	});
+}
+function updateAmountSpent(callback){
+	var Budget = mongoose.model('Budgets');
+	async.series([function(callback){
+		getAmountSpentCurrentMonth(callback);
+	}], function(err, results){
+		var amount_spent = results[0];
+		Budget.update({account_number: account_number}, {amount_spent:amount_spent}, {multi:true}, function(err, numberAffected, raw){
+			if(err){
+				callback(err);
+			}else{
+				console.log('Successfully updated amount spent for ' + numberAffected + ' documents');
+				callback(null, amount_spent);
+			}
+	});
+	});
+	
 }
 
 function getAmountSpentCurrentMonth(callback){
