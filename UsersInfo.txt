@@ -8,5 +8,5 @@ livu-biz-au2@paypal.com
 livu-guest-au2@pp.com
 1544043669165498388
 
-livu-au3@paypal.com
+livu-au3@paypal.com - only credit card
 1779034993494330100
