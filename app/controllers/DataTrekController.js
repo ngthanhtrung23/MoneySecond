@@ -1,6 +1,6 @@
 var request = require('request');
 var account_number = '2066400437456043270';
-
+var async = require('async');
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 var cache = [];
 exports.dataTrekQuery = function (sql, schema, callback, cacheable) {
@@ -22,16 +22,17 @@ exports.dataTrekQuery = function (sql, schema, callback, cacheable) {
         }},
         function (error, response, body) {
             if (!error && response.statusCode == 200) {
-                user_data = JSON.parse(body);
+                var user_data = JSON.parse(body);
                 if(cacheable){
                     cache[sql] = user_data['data'];
                 }
+                console.log(body);
                 callback(null, user_data['data']);
             }else{
                 callback(error);
             }
         }
-        );
+    );
 }
 
 exports.userData = function (req, res) {
@@ -74,25 +75,8 @@ exports.monthlyExpense = function (req, res) {
     for(i = 0; i < 12; ++i) {
         expenses.push(0);
     }
-    var counter = 0;
+    
 
-    for(i = 0; i < 12; ++i) {
-        var sql = 'select sum(amount) from  wtransaction '
-        + ' where account_number = ' + account_number
-        + ' and amount<0'
-        + ' and time_created >= ' + dates[i]
-        + ' and time_created < ' + dates[i+1];
-        console.log("sql = " + sql);
-        dataTrekQuery(sql, 'MONEY', function (data) {
-            console.log("data = " + data);
-            counter += 1;
-            if (counter == 12) {
-                res.json({
-                    expense: expenses,
-                });
-            }
-        });
-    }
 }
 
 exports.monthlyIncome = function (req, res) {

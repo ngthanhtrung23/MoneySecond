@@ -16,7 +16,7 @@ router.get('/moneyInsight', function(req, res) {
 
 router.post('/budget', budgetController.insert);
 router.get('/getBudgets', budgetController.getAllBudgets);
-router.get('/getBudget/:id', budgetController.getBudgetByAccountNumber);
+router.get('/getBudget', budgetController.getBudgetByAccountNumber);
 router.post('/updateBudget', budgetController.updateBudget);
 router.post('/updateAmountSpent', budgetController.updateAmountSpent);
 router.get('/userData', dataTrekController.userData);
