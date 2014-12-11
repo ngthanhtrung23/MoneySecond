@@ -1,4 +1,5 @@
 var request = require('request');
+var account_number = '1538099150765695489';
 
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 var cache = [];
@@ -33,8 +34,6 @@ function dataTrekQuery(sql, callback, cacheable) {
 
 exports.userData = function (req, res) {
     console.log("Retrieving user personal info");
-    var reqBody = req.body;
-    var account_number = reqBody.account_number;
     var sql = "select PRIMARY_EMAIL_NAME, FIRST_NAME, LAST_NAME from WUSER where ACCOUNT_NUMBER = '" + account_number+ "'";
     dataTrekQuery(sql,
         function (data) {
