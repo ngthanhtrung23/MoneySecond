@@ -5,8 +5,8 @@
 {<main}
       <!-- Main jumbotron for a primary marketing message or call to action -->
       <div class="jumbotron">
-        <h1>Spending data</h1>
-        <p>Shows your spending metrics and break-down of your spending pattern.</p>
+        <h1>Hello, <span id="account-last-name"></span>!</h1>
+        <p>In this page, you can find some statistics of your spending in the past year. You can also set budget limits for each month.</p>
         <p><a role="button" class="btn btn-primary btn-lg" href="#">Learn more »</a></p>
       </div>
 

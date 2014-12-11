@@ -3,7 +3,7 @@ var account_number = '1538099150765695489';
 
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 var cache = [];
-function dataTrekQuery(sql, callback, cacheable) {
+function dataTrekQuery(sql, schema, callback, cacheable) {
     if(cacheable){
         if (cache.hasOwnProperty(sql)) {
             console.log('this request is cached!');
@@ -16,7 +16,7 @@ function dataTrekQuery(sql, callback, cacheable) {
         'https://io/DataTrek/trek/',
         {form: {
             system: 'stage2dev348',
-            schema: 'CLOC',
+            schema: schema,
             sql: sql,
             unique_id: 'B4EB0D765BF24ACE0F40CF0C5F1BDB2E_1401357587612',
         }},
@@ -35,7 +35,7 @@ function dataTrekQuery(sql, callback, cacheable) {
 exports.userData = function (req, res) {
     console.log("Retrieving user personal info");
     var sql = "select PRIMARY_EMAIL_NAME, FIRST_NAME, LAST_NAME from WUSER where ACCOUNT_NUMBER = '" + account_number+ "'";
-    dataTrekQuery(sql,
+    dataTrekQuery(sql, 'CLOC',
         function (data) {
             res.json({
                 email:data[1][0],
@@ -47,11 +47,45 @@ exports.userData = function (req, res) {
 
 exports.monthlyExpense = function (req, res) {
     console.log("Retrieving user monthly expense");
-    res.json({
-        expense: [20, 50, 30, 70,
-                  66, 39, 47, 12,
-                  99, 77, 38, 11],
-    });
+    var dates = [
+        1388534400, // 1
+        1391212800, // 2
+        1393632000, // 3
+        1396310400, // 4
+        1398902400, // 5
+        1401580800, // 6
+        1404172800, // 7
+        1406851200, // 8
+        1409529600, // 9
+        1412121600, // 10
+        1414800000, // 11
+        1417392000, // 12
+        1420070400, // 1 - 2015
+    ];
+    var expenses = [], i;
+
+    for(i = 0; i < 12; ++i) {
+        expenses.push(0);
+    }
+    var counter = 0;
+
+    for(i = 0; i < 12; ++i) {
+        var sql = 'select sum(amount) from  wtransaction '
+                + ' where account_number = ' + account_number
+                + ' and amount<0'
+                + ' and time_created >= ' + dates[i]
+                + ' and time_created < ' + dates[i+1];
+        console.log("sql = " + sql);
+        dataTrekQuery(sql, 'MONEY', function (data) {
+            console.log("data = " + data);
+            counter += 1;
+            if (counter == 12) {
+                res.json({
+                    expense: expenses,
+                });
+            }
+        });
+    }
 }
 
 exports.monthlyIncome = function (req, res) {
