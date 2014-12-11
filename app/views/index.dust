@@ -72,7 +72,7 @@
         <input type="submit" name="add.x" class="btn btn-sm btn-primary"/>
       </form>
       <div id="result" class="label label-warning" style="">
-        $100<!--current total payment for the month -->
+        <div id="spent-budget"></div>
       </div>
       <!--
       <h2>

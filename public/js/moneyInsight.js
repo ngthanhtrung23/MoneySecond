@@ -10,12 +10,20 @@ $(document).ready(function () {
         $('#pieLegend').html(myPieChart.generateLegend());
     });
 
-    $.post(
+    $.get(
         '/userData',
         {},
         function (data, status, xhr) {
             console.log(data);
             $('#account-last-name').text(data['last_name']);
+        }
+    );
+
+    $.get(
+        '/getBudget/1',
+        {},
+        function (data, status, xhr) {
+            console.log(data);
         }
     );
 });
