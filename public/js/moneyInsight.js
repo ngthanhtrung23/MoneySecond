@@ -20,10 +20,11 @@ $(document).ready(function () {
     );
 
     $.get(
-        '/getBudget/1',
+        '/getBudget',
         {},
         function (data, status, xhr) {
             console.log(data);
+            $('#result').text('You spent: $' + data['data']['amount_spent'] + '/$' + data['data']['budget']);
         }
     );
 });

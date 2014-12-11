@@ -71,8 +71,7 @@
         <input type="hidden" name="account_number" value="{user.account_number}"/>
         <input type="submit" name="add.x" class="btn btn-sm btn-primary"/>
       </form>
-      <div id="result" class="label label-warning" style="">
-        <div id="spent-budget"></div>
+      <div id="result" class="alert alert-warning" style="width: 19% !important;">
       </div>
       <!--
       <h2>

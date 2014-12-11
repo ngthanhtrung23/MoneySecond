@@ -57,8 +57,19 @@ exports.getBudgetByAccountNumber = function(req, res){
 		if(err){
 			console.log("ERROR FETCHING BUDGET!");
 			callbacks[1](err);
-		}else 
-		callbacks[0](budget);
+		} else {
+            if (budget == null) {
+                async.series([function(callback){
+                    getAmountSpentCurrentMonth(callback);
+                }], function(err, results){
+                    console.log(results);
+                    var budget = new Budget({account_number: account_number, budget:50000, amount_spent: results[0]});
+                    budget.save(function(err){
+                    });
+                });
+            }
+		    callbacks[0](budget);
+        }
 	});
 }
 
