@@ -7,6 +7,7 @@ $(document).ready(function () {
 
     getSpendCategoryData(function(catData) {
         var myPieChart = new Chart($('#category-canvas').get(0).getContext('2d')).Pie(catData, getPieOptions());
+        $('#pieLegend').html(myPieChart.generateLegend());
     });
 
     $.post(
