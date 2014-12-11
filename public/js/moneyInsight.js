@@ -25,6 +25,12 @@ $(document).ready(function () {
         function (data, status, xhr) {
             console.log(data);
             $('#result').text('You spent: $' + data['data']['amount_spent'] + '/$' + data['data']['budget']);
+            if (data['data']['amount_spent'] > data['data']['budget']) {
+                $('#result').removeClass('alert-warning').addClass('alert-danger');
+            }
+            else {
+                $('#result').removeClass('alert-danger').addClass('alert-warning');
+            }
         }
     );
 });
