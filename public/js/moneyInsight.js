@@ -49,10 +49,10 @@ function getMonthlyExpenseData(callback) {
                 datasets: [
                     {
                         label: "Monthly Income",
-                        fillColor: "rgba(220,220,220,0.5)",
-                        strokeColor: "rgba(220,220,220,0.8)",
-                        highlightFill: "rgba(220,220,220,0.75)",
-                        highlightStroke: "rgba(220,220,220,1)",
+                        fillColor: "#337ab7",
+                        strokeColor: "#337ab7",
+                        highlightFill: "#619ED4",
+                        highlightStroke: "#619ED4",
                         data: data['expense']
                     }
                 ]
