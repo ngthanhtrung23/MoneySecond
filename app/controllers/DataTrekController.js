@@ -1,21 +1,21 @@
 var request = require('request');
-var account_number = '1538099150765695489';
+var account_number = '2066400437456043270';
 
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 var cache = [];
-function dataTrekQuery(sql, schema, callback, cacheable) {
+exports.dataTrekQuery = function (sql, schema, callback, cacheable) {
     if(cacheable){
         if (cache.hasOwnProperty(sql)) {
             console.log('this request is cached!');
             var user_data = cache[sql];
-            callback(user_data);
+            callback(null, user_data);
             return;
         }
     }
     request.post(
         'https://io/DataTrek/trek/',
         {form: {
-            system: 'stage2dev348',
+            system: 'stage2dev104',
             schema: schema,
             sql: sql,
             unique_id: 'B4EB0D765BF24ACE0F40CF0C5F1BDB2E_1401357587612',
@@ -26,22 +26,29 @@ function dataTrekQuery(sql, schema, callback, cacheable) {
                 if(cacheable){
                     cache[sql] = user_data['data'];
                 }
-                callback(user_data['data']);
+                callback(null, user_data['data']);
+            }else{
+                callback(error);
             }
         }
-    );
+        );
 }
 
 exports.userData = function (req, res) {
     console.log("Retrieving user personal info");
     var sql = "select PRIMARY_EMAIL_NAME, FIRST_NAME, LAST_NAME from WUSER where ACCOUNT_NUMBER = '" + account_number+ "'";
     dataTrekQuery(sql, 'CLOC',
-        function (data) {
-            res.json({
-                email:data[1][0],
-                first_name: data[1][1],
-                last_name: data[1][2],
-            });
+        function (err, data) {
+            if(err){
+                res.json("Error!");
+                console.log('Error when retreiving user data!');
+            }else{
+                res.json({
+                    email:data[1][0],
+                    first_name: data[1][1],
+                    last_name: data[1][2],
+                });
+            }
         }, true);
 }
 
@@ -61,45 +68,45 @@ exports.monthlyExpense = function (req, res) {
         1414800000, // 11
         1417392000, // 12
         1420070400, // 1 - 2015
-    ];
-    var expenses = [], i;
+        ];
+        var expenses = [], i;
 
-    for(i = 0; i < 12; ++i) {
-        expenses.push(0);
+        for(i = 0; i < 12; ++i) {
+            expenses.push(0);
+        }
+        var counter = 0;
+
+        for(i = 0; i < 12; ++i) {
+            var sql = 'select sum(amount) from  wtransaction '
+            + ' where account_number = ' + account_number
+            + ' and amount<0'
+            + ' and time_created >= ' + dates[i]
+            + ' and time_created < ' + dates[i+1];
+            console.log("sql = " + sql);
+            dataTrekQuery(sql, 'MONEY', function (data) {
+                console.log("data = " + data);
+                counter += 1;
+                if (counter == 12) {
+                    res.json({
+                        expense: expenses,
+                    });
+                }
+            });
+        }
     }
-    var counter = 0;
 
-    for(i = 0; i < 12; ++i) {
-        var sql = 'select sum(amount) from  wtransaction '
-                + ' where account_number = ' + account_number
-                + ' and amount<0'
-                + ' and time_created >= ' + dates[i]
-                + ' and time_created < ' + dates[i+1];
-        console.log("sql = " + sql);
-        dataTrekQuery(sql, 'MONEY', function (data) {
-            console.log("data = " + data);
-            counter += 1;
-            if (counter == 12) {
-                res.json({
-                    expense: expenses,
-                });
-            }
+    exports.monthlyIncome = function (req, res) {
+        console.log("Retrieving user monthly income");
+        res.json({
+            income: [20, 50, 30, 70,
+            66, 39, 47, 12,
+            99, 77, 38, 11],
         });
     }
-}
 
-exports.monthlyIncome = function (req, res) {
-    console.log("Retrieving user monthly income");
-    res.json({
-        income: [20, 50, 30, 70,
-                  66, 39, 47, 12,
-                  99, 77, 38, 11],
-    });
-}
-
-exports.spendCategory = function (req, res) {
-    console.log("Retrieving spend category data");
-    res.json([
+    exports.spendCategory = function (req, res) {
+        console.log("Retrieving spend category data");
+        res.json([
         {
             value: 300,
             color:"#F7464A",
@@ -118,11 +125,11 @@ exports.spendCategory = function (req, res) {
             highlight: "#FFC870",
             label: "Yellow"
         }
-    ]);
-}
+        ]);
+    }
 
-exports.incomeCategory = function (req, res) {
-    res.json([
+    exports.incomeCategory = function (req, res) {
+        res.json([
         {
             value: 300,
             color:"#F7464A",
@@ -141,5 +148,5 @@ exports.incomeCategory = function (req, res) {
             highlight: "#FFC870",
             label: "Yellow"
         }
-    ]);
-}
+        ]);
+    }

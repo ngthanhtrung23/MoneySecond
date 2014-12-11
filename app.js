@@ -19,7 +19,7 @@ app.engine('dust', cons.dust);
 
 // view engine setup
 app.set('views', path.join(__dirname, '/app/views'));
-app.set('view engine', 'dust');
+app.set('view engine', 'jade');
 
 
 // uncomment after placing your favicon in /public
