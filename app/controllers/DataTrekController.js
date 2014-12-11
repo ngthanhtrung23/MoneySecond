@@ -1,8 +1,16 @@
 var request = require('request');
 
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
-
-function dataTrekQuery(sql, callback) {
+var cache = [];
+function dataTrekQuery(sql, callback, cacheable) {
+    if(cacheable){
+        if (cache.hasOwnProperty(sql)) {
+            console.log('this request is cached!');
+            var user_data = cache[sql];
+            callback(user_data);
+            return;
+        }
+    }
     request.post(
         'https://io/DataTrek/trek/',
         {form: {
@@ -14,6 +22,9 @@ function dataTrekQuery(sql, callback) {
         function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 user_data = JSON.parse(body);
+                if(cacheable){
+                    cache[sql] = user_data['data'];
+                }
                 callback(user_data['data']);
             }
         }
@@ -22,17 +33,17 @@ function dataTrekQuery(sql, callback) {
 
 exports.userData = function (req, res) {
     console.log("Retrieving user personal info");
-    var user_email = "";
-    dataTrekQuery("select PRIMARY_EMAIL_NAME, FIRST_NAME, LAST_NAME from WUSER where ACCOUNT_NUMBER = '1538099150765695489'",
+    var reqBody = req.body;
+    var account_number = reqBody.account_number;
+    var sql = "select PRIMARY_EMAIL_NAME, FIRST_NAME, LAST_NAME from WUSER where ACCOUNT_NUMBER = '" + account_number+ "'";
+    dataTrekQuery(sql,
         function (data) {
-            user_email = data[1][0];
             res.json({
-                email: user_email,
+                email:data[1][0],
                 first_name: data[1][1],
                 last_name: data[1][2],
             });
-        }
-    );
+        }, true);
 }
 
 exports.monthlyExpense = function (req, res) {
