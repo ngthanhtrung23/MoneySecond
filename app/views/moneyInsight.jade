@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1 Monthly Income
+  canvas(id='myLineChart', width='300', height='200')
+  h1 Bar Chart
+  canvas(id='myBarChart', width='300', height='200')
+  h1 Pie Chart
+  canvas(id='myPieChart', width='300', height='200')
+  h1 Multiline Chart
+  canvas(id='line')
+  canvas(id='bar')
+  canvas(id='line-bar')
+  canvas(id='multi-line-bar')
+  script(src='js/index.js')
+  script(src='js/moneyInsight.js')

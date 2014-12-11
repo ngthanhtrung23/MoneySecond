@@ -47,5 +47,10 @@ exports.userData = function (req, res) {
 }
 
 exports.monthlyExpense = function (req, res) {
-    console.log();
+    console.log("Retrieving user monthly expense");
+    res.json({
+        expense: [20, 50, 30, 70,
+                  66, 39, 47, 12,
+                  99, 77, 38, 11],
+    });
 }
