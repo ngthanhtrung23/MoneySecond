@@ -68,85 +68,85 @@ exports.monthlyExpense = function (req, res) {
         1414800000, // 11
         1417392000, // 12
         1420070400, // 1 - 2015
-        ];
-        var expenses = [], i;
+    ];
+    var expenses = [], i;
 
-        for(i = 0; i < 12; ++i) {
-            expenses.push(0);
-        }
-        var counter = 0;
-
-        for(i = 0; i < 12; ++i) {
-            var sql = 'select sum(amount) from  wtransaction '
-            + ' where account_number = ' + account_number
-            + ' and amount<0'
-            + ' and time_created >= ' + dates[i]
-            + ' and time_created < ' + dates[i+1];
-            console.log("sql = " + sql);
-            dataTrekQuery(sql, 'MONEY', function (data) {
-                console.log("data = " + data);
-                counter += 1;
-                if (counter == 12) {
-                    res.json({
-                        expense: expenses,
-                    });
-                }
-            });
-        }
+    for(i = 0; i < 12; ++i) {
+        expenses.push(0);
     }
+    var counter = 0;
 
-    exports.monthlyIncome = function (req, res) {
-        console.log("Retrieving user monthly income");
-        res.json({
-            income: [20, 50, 30, 70,
-            66, 39, 47, 12,
-            99, 77, 38, 11],
+    for(i = 0; i < 12; ++i) {
+        var sql = 'select sum(amount) from  wtransaction '
+        + ' where account_number = ' + account_number
+        + ' and amount<0'
+        + ' and time_created >= ' + dates[i]
+        + ' and time_created < ' + dates[i+1];
+        console.log("sql = " + sql);
+        dataTrekQuery(sql, 'MONEY', function (data) {
+            console.log("data = " + data);
+            counter += 1;
+            if (counter == 12) {
+                res.json({
+                    expense: expenses,
+                });
+            }
         });
     }
+}
 
-    exports.spendCategory = function (req, res) {
-        console.log("Retrieving spend category data");
-        res.json([
-        {
-            value: 300,
-            color:"#F7464A",
-            highlight: "#FF5A5E",
-            label: "Red"
-        },
-        {
-            value: 50,
-            color: "#46BFBD",
-            highlight: "#5AD3D1",
-            label: "Green"
-        },
-        {
-            value: 100,
-            color: "#FDB45C",
-            highlight: "#FFC870",
-            label: "Yellow"
-        }
-        ]);
-    }
+exports.monthlyIncome = function (req, res) {
+    console.log("Retrieving user monthly income");
+    res.json({
+        income: [20, 50, 30, 70,
+        66, 39, 47, 12,
+        99, 77, 38, 11],
+    });
+}
 
-    exports.incomeCategory = function (req, res) {
-        res.json([
-        {
-            value: 300,
-            color:"#F7464A",
-            highlight: "#FF5A5E",
-            label: "Red"
-        },
-        {
-            value: 50,
-            color: "#46BFBD",
-            highlight: "#5AD3D1",
-            label: "Green"
-        },
-        {
-            value: 100,
-            color: "#FDB45C",
-            highlight: "#FFC870",
-            label: "Yellow"
-        }
-        ]);
+exports.spendCategory = function (req, res) {
+    console.log("Retrieving spend category data");
+    res.json([
+    {
+        value: 300,
+        color:"#F7464A",
+        highlight: "#FF5A5E",
+        label: "Red"
+    },
+    {
+        value: 50,
+        color: "#46BFBD",
+        highlight: "#5AD3D1",
+        label: "Green"
+    },
+    {
+        value: 100,
+        color: "#FDB45C",
+        highlight: "#FFC870",
+        label: "Yellow"
     }
+    ]);
+}
+
+exports.incomeCategory = function (req, res) {
+    res.json([
+    {
+        value: 300,
+        color:"#F7464A",
+        highlight: "#FF5A5E",
+        label: "Red"
+    },
+    {
+        value: 50,
+        color: "#46BFBD",
+        highlight: "#5AD3D1",
+        label: "Green"
+    },
+    {
+        value: 100,
+        color: "#FDB45C",
+        highlight: "#FFC870",
+        label: "Yellow"
+    }
+    ]);
+}
