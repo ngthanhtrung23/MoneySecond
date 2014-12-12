@@ -2,7 +2,7 @@ $(document).ready(function () {
     "use strict";
 
     getMonthlyExpenseData(function(barData) {
-        var myBarChart = new Chart($('#monthy-income-canvas').get(0).getContext("2d")).LineBar(barData, getBarOptions());
+        var myBarChart = new Chart($('#monthy-income-canvas').get(0).getContext("2d")).Bar(barData, getBarOptions());
     });
 
     getSpendCategoryData(function(catData) {
@@ -59,23 +59,14 @@ function getMonthlyExpenseData(callback) {
                 labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
                 datasets: [
                     {
-                        label: "Monthly Income",
+                        label: "Total Balance",
                         type: "bar",
                         fillColor: "#337ab7",
                         strokeColor: "#337ab7",
                         highlightFill: "#619ED4",
                         highlightStroke: "#619ED4",
                         data: data['expense']
-                    },
-                    {
-                        label: "Monthly Income",
-                        type: "line",
-                        fillColor: "#337ab7",
-                        strokeColor: "#337ab7",
-                        highlightFill: "#619ED4",
-                        highlightStroke: "#619ED4",
-                        data: delta
-                    },
+                    }
                 ]
             });
         }
