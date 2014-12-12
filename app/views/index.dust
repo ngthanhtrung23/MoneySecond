@@ -19,8 +19,8 @@
           margin-top: 7px;
           margin-left: 4px;
           margin-right: 4px; 
-          width: 5px;
-          height: 5px;
+          width: 10px;
+          height: 10px;
           border:1px solid;
           float:left;
         }
