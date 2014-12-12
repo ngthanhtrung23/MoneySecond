@@ -3,6 +3,33 @@
   Income
 {/title}
 {<main}
+  <style type="text/css">
+        div#pieLegend{
+          margin: 5px;
+          padding: 5px;
+        }
+
+        ul.pie-legend{
+          list-style: none;
+          padding:0;
+          margin:0;
+        }
+
+        ul.pie-legend li div.box{
+          margin-top: 7px;
+          margin-left: 4px;
+          margin-right: 4px; 
+          width: 10px;
+          height: 10px;
+          border:1px solid;
+          float:left;
+        }
+         ul.pie-legend li div.text{
+          float:none;
+          display:block;
+        }
+
+  </style>
 	 <div class="jumbotron">
         <h1>Hello, <span id="account-last-name"></span>!</h1>
         <p>In this page, you can find some statistics of your income through PayPal in the past year.</p>
