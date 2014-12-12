@@ -158,6 +158,7 @@ function getAmountSpentCurrentMonth(callback){
     	}
     }, function(err, results){
     	if(err){
+    		//FIXME res is not being passed in. will cause exception
     		res.json('ERROR');
     		console.log("Error when trying to query transaction");
     	}else{

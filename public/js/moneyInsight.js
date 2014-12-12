@@ -126,6 +126,6 @@ function getPieOptions() {
         animateScale : false,
 
         //String - A legend template
-        legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
+        legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><div class=\"box\" style=\"background-color:<%=segments[i].fillColor%>\"/><%if(segments[i].label){%><div class=\"text\"><%=segments[i].label%></div><%}%></li><%}%></ul>"
     };
 }

@@ -3,6 +3,32 @@
   Spending
 {/title}
 {<main}
+      <style type="text/css">
+        div#pieLegend{
+          margin: 5px;
+          padding: 5px;
+        }
+
+        ul.pie-legend{
+          list-style: none;
+          padding:0;
+          margin:0;
+        }
+
+        ul.pie-legend li div.box{
+          margin-top: 7px;
+          margin-left: 4px;
+          margin-right: 4px; 
+          width: 5px;
+          height: 5px;
+          border:1px solid;
+          float:left;
+        }
+         ul.pie-legend li div.text{
+          float:none;
+          display:block;
+        }
+      </style>
       <!-- Main jumbotron for a primary marketing message or call to action -->
       <div class="jumbotron">
         <h1>Hello, <span id="account-last-name"></span>!</h1>
@@ -23,7 +49,8 @@
       </div>
       <div>
         <canvas id="category-canvas" width="200" height="200"></canvas>
-        <div id="pieLegend"></div>
+        <div id="pieLegend">
+        </div>
       </div>
       <!--
       <div class="row">
