@@ -149,25 +149,25 @@ exports.spendCategory = function (req, res) {
     console.log("Retrieving spend category data");
     res.json([
     {
-        value: 300,
+        value: 4000,
         color:"#7dac9f",
         highlight: "#8FB9AD",
         label: "Food"
     },
     {
-        value: 50,
+        value: 1000,
         color: "#dc7062",
         highlight: "#EA8477",
         label: "Clothes"
     },
     {
-        value: 100,
+        value: 2000,
         color: "#66a8d4",
         highlight: "#78B6E0",
         label: "Transport"
     },
     {
-        value: 77,
+        value: 2000,
         color: '#e5b060',
         highlight: '#F8C880',
         label: 'Others'
@@ -205,20 +205,20 @@ exports.incomeCategory = function (req, res) {
             res.json([
             {
                 value: -parseInt(transaction1, 10),
-                color:"#F7464A",
-                highlight: "#FF5A5E",
+                color:"#e5b060",
+                highlight: "#F8C880",
                 label: "Bank"
             },
             {
                 value: -parseInt(transaction2, 10),
-                color: "#46BFBD",
-                highlight: "#5AD3D1",
+                color: "#dc7062",
+                highlight: "#EA8477",
                 label: "Balance"
             },
             {
                 value: parseInt(transaction3, 10),
-                color: "#FDB45C",
-                highlight: "#FFC870",
+                color: "#66a8d4",
+                highlight: "#78B6E0",
                 label: "Card"
             }
             ]);
