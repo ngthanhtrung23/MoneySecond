@@ -1,6 +1,10 @@
 MoneySecond
 ===========
 
+DESCRIPTION:
+
+Our project for PayPal Hackathon. Get data from your PayPal account and make statistics of your spending / income in the past 12 months, and categorize them.
+
 SETUP AND RUN:
 
 * Install node + npm
